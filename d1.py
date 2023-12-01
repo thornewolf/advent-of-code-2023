@@ -1,6 +1,8 @@
-with open("d1.txt") as f:
-    data = f.read()
-data = data.split("\n")
+def read_split(filename):
+    with open(filename) as f:
+        data = f.read()
+    data = data.split("\n")
+    return data
 
 
 def keep_numbers(line):
@@ -11,7 +13,7 @@ def take_outer(line):
     return line[0] + line[-1]
 
 
-m = {
+number_to_number = {
     "one": 1,
     "two": 2,
     "three": 3,
@@ -25,17 +27,33 @@ m = {
 
 
 def replace_words(line):
-    for word in m:
-        line = line.replace(word, word + str(m[word]) + word)
+    for word in number_to_number:
+        line = line.replace(word, word + str(number_to_number[word]) + word)
     return line
 
 
-data = [replace_words(line) for line in data]
-print(data[:7])
-data = [keep_numbers(line) for line in data]
-print(data[:7])
-data = [take_outer(line) for line in data]
-print(data[:7])
-data = [int(line) for line in data]
-print(data[:7])
-print(sum(data))
+def star_1(filename):
+    data = read_split(filename)
+    data = [keep_numbers(line) for line in data]
+    data = [take_outer(line) for line in data]
+    data = [int(line) for line in data]
+    return sum(data)
+
+
+def star_2(filename):
+    data = read_split(filename)
+    # addresses extra prompt
+    data = [replace_words(line) for line in data]
+    data = [keep_numbers(line) for line in data]
+    data = [take_outer(line) for line in data]
+    data = [int(line) for line in data]
+    return sum(data)
+
+
+def main():
+    print("Star 1:\n", star_1("d1.txt"))
+    print("Star 2:\n", star_2("d1.txt"))
+
+
+if __name__ == "__main__":
+    main()
